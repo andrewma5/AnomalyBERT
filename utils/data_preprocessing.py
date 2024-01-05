@@ -58,7 +58,7 @@ def load_data(dataset, base_dir, output_folder, json_folder):
             json.dump(channel_divisions, file)
                 
     elif dataset == 'SMAP' or dataset == 'MSL':
-        dataset_folder = os.path.join(base_dir, 'telemanom/data')
+        dataset_folder = os.path.join(base_dir, 'telemanom\\data')
         with open(os.path.join(dataset_folder, 'labeled_anomalies.csv'), 'r') as file:
             csv_reader = csv.reader(file, delimiter=',')
             res = [row for row in csv_reader][1:]
@@ -149,6 +149,50 @@ def load_data(dataset, base_dir, output_folder, json_folder):
         abnormal_data = MinMaxScaler().fit_transform(abnormal_data).clip(0, 1)
         np.save(os.path.join(output_folder, dataset + "_test.npy"), abnormal_data)
         np.save(os.path.join(output_folder, dataset + "_test_label.npy"), abnormal_label)
+
+    elif dataset == "Floodwatch":
+        filenames = ["combined", "combined1", "combined2", "combined3"]
+        to_concat = []
+        for name in filenames:
+            file = pd.read_csv(os.path.join(base_dir, 'Floodwatch/' + name + ".csv"))
+            to_concat.append(file.drop(["createdAtUnix"], axis=1))
+
+        all_data = np.concatenate(to_concat)
+
+        anomalies = pd.read_csv(os.path.join(base_dir, "Floodwatch/anomalies.csv"))
+
+        labels = []
+        class_divisions = {}
+        channel_divisions = []
+        current_index = 0
+
+        for i, row in anomalies.iterrows():
+            anoms = ast.literal_eval(row["anomalies"])
+            length = int(row["length"])
+            label = np.zeros([length], dtype=bool)
+            for anomaly in anoms:
+                label[anomaly[0]:anomaly[1] + 1] = True
+                labels.extend(label)
+
+                _class = row["sensor_id"]
+                if _class in class_divisions.keys():
+                    class_divisions[_class][1] += length
+                else:
+                    class_divisions[_class] = [current_index, current_index+length]
+                channel_divisions.append([current_index, current_index+length])
+                current_index += length
+
+        labels = np.asarray(labels)
+        
+        np.save(os.path.join(output_folder, dataset + "_test_label.npy"), labels)
+
+        with open(os.path.join(output_folder, dataset + "_test_class.json"), 'w') as file:
+            json.dump(class_divisions, file)
+        with open(os.path.join(output_folder, dataset + "_test_channel.json"), 'w') as file:
+            json.dump(channel_divisions, file)
+
+        np.save(os.path.join(output_folder, dataset + "_train.npy"), all_data[:6000])
+        np.save(os.path.join(output_folder, dataset + "_test.npy"), all_data[6000:])
         
         
 
@@ -165,7 +209,7 @@ if __name__ == '__main__':
                         help="Directory of the json files for the processed data")
     options = parser.parse_args()
     
-    datasets = ['SMD', 'SMAP', 'MSL', 'SWaT', 'WADI']
+    datasets = ['SMD', 'SMAP', 'MSL', 'SWaT', 'WADI', "Floodwatch"]
     
     if options.dataset in datasets:
         base_dir = options.data_dir
