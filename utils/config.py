@@ -1,12 +1,12 @@
 import os
 
 PROJECT_DIR = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
-DATASET_DIR = ''
+DATASET_DIR = 'datasets/processed/'
 LOG_DIR = 'logs/'
-DATA_PROPERTY_DIR = 'data/'
+DATA_PROPERTY_DIR = 'datasets/processed/'
 
 
-DATASET_LIST = ['SMAP', 'MSL', 'SMD', 'SWaT', 'WADI']
+DATASET_LIST = ['SMAP', 'MSL', 'SMD', 'SWaT', 'WADI', "Floodwatch"]
 
 TRAIN_DATASET = {}
 TEST_DATASET = {}
@@ -22,20 +22,24 @@ DATA_DIVISION = {'SMAP' : {'channel' : DATA_PROPERTY_DIR+'SMAP_test_channel.json
                            'class' : DATA_PROPERTY_DIR+'SMAP_test_class.json'},
                  'MSL' : {'channel' : DATA_PROPERTY_DIR+'MSL_test_channel.json',
                           'class' : DATA_PROPERTY_DIR+'MSL_test_class.json'},
-                 'SMD' : {'channel' : DATA_PROPERTY_DIR+'SMD_test_channel.json'}
+                 'SMD' : {'channel' : DATA_PROPERTY_DIR+'SMD_test_channel.json'},
+                 'Floodwatch' : {'channel' : DATA_PROPERTY_DIR+'Floodwatch_test_channel.json',
+                           'class' : DATA_PROPERTY_DIR+'Floodwatch_test_class.json'},
                 }
 
 DEFAULT_DIVISION = {'SMAP' : 'channel',
                     'MSL' : 'channel',
                     'SMD' : 'channel',
                     'SWaT' : 'total',
-                    'WADI' : 'total'
+                    'WADI' : 'total',
+                    'Floodwatch' : 'channel'
                    }
 
 
 NUMERICAL_COLUMNS = {'SMAP' : (0,),
                      'MSL' : (0,),
-                     'SMD' : tuple(list(range(7)) + list(range(8, 38)))
+                     'SMD' : tuple(list(range(7)) + list(range(8, 38))),
+                     'Floodwatch' : (0,),
                     }
 
 CATEGORICAL_COLUMNS = {'SMAP' : range(1, 25),
@@ -45,7 +49,8 @@ CATEGORICAL_COLUMNS = {'SMAP' : range(1, 25),
                                       + list(range(29, 34)) + [42,43,48,49,50]),
                        'WADI' : tuple([6,7] + list(range(9, 19)) + list(range(47, 59))\
                                       + list(range(68, 81)) + [82,84,87] + list(range(91, 97))\
-                                      + [111] + list(range(113, 120)) + [121])
+                                      + [111] + list(range(113, 120)) + [121]),
+                       'Floodwatch' : range(1, 5),
                       }
 
 IGNORED_COLUMNS = {'SWaT' : (10,),
