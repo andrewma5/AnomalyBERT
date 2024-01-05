@@ -158,6 +158,7 @@ def load_data(dataset, base_dir, output_folder, json_folder):
             to_concat.append(file.drop(["createdAtUnix"], axis=1))
 
         all_data = np.concatenate(to_concat)
+        all_data = MinMaxScaler().fit_transform(all_data)
 
         anomalies = pd.read_csv(os.path.join(base_dir, "Floodwatch/anomalies.csv"))
 
