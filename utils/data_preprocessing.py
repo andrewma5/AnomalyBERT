@@ -58,7 +58,7 @@ def load_data(dataset, base_dir, output_folder, json_folder):
             json.dump(channel_divisions, file)
                 
     elif dataset == 'SMAP' or dataset == 'MSL':
-        dataset_folder = os.path.join(base_dir, 'telemanom\\data')
+        dataset_folder = os.path.join(base_dir, 'telemanom/data')
         with open(os.path.join(dataset_folder, 'labeled_anomalies.csv'), 'r') as file:
             csv_reader = csv.reader(file, delimiter=',')
             res = [row for row in csv_reader][1:]
@@ -192,8 +192,8 @@ def load_data(dataset, base_dir, output_folder, json_folder):
         with open(os.path.join(output_folder, dataset + "_test_channel.json"), 'w') as file:
             json.dump(channel_divisions, file)
 
-        np.save(os.path.join(output_folder, dataset + "_train.npy"), all_data[:6000])
-        np.save(os.path.join(output_folder, dataset + "_test.npy"), all_data[6000:])
+        np.save(os.path.join(output_folder, dataset + "_train.npy"), all_data)
+        np.save(os.path.join(output_folder, dataset + "_test.npy"), all_data)
         
         
 
