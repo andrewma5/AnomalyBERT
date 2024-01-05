@@ -39,7 +39,7 @@ DEFAULT_DIVISION = {'SMAP' : 'channel',
 NUMERICAL_COLUMNS = {'SMAP' : (0,),
                      'MSL' : (0,),
                      'SMD' : tuple(list(range(7)) + list(range(8, 38))),
-                     'Floodwatch' : (0,),
+                     'Floodwatch' : range(3),
                     }
 
 CATEGORICAL_COLUMNS = {'SMAP' : range(1, 25),
@@ -50,7 +50,6 @@ CATEGORICAL_COLUMNS = {'SMAP' : range(1, 25),
                        'WADI' : tuple([6,7] + list(range(9, 19)) + list(range(47, 59))\
                                       + list(range(68, 81)) + [82,84,87] + list(range(91, 97))\
                                       + [111] + list(range(113, 120)) + [121]),
-                       'Floodwatch' : range(1, 5),
                       }
 
 IGNORED_COLUMNS = {'SWaT' : (10,),

@@ -26,8 +26,8 @@ def main(options):
     d_data = len(train_data[0])
     numerical_column = np.array(config.NUMERICAL_COLUMNS[options.dataset])
     num_numerical = len(numerical_column)
-    categorical_column = np.array(config.CATEGORICAL_COLUMNS[options.dataset])
-    num_categorical = len(categorical_column)
+    # categorical_column = np.array(config.CATEGORICAL_COLUMNS[options.dataset])
+    num_categorical = 0 # len(categorical_column)
     
     # Ignore the specific columns.
     if options.dataset in config.IGNORED_COLUMNS.keys():
@@ -39,7 +39,7 @@ def main(options):
         
         d_data = len(remaining_column)
         numerical_column -= (numerical_column[:, None] - ignored_column[None, :] > 0).astype(int).sum(axis=1)
-        categorical_column -= (categorical_column[:, None] - ignored_column[None, :] > 0).astype(int).sum(axis=1)
+        # categorical_column -= (categorical_column[:, None] - ignored_column[None, :] > 0).astype(int).sum(axis=1)
         
     # Data division
     data_division = config.DEFAULT_DIVISION[options.dataset] if options.data_division == None else options.data_division 
