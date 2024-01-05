@@ -175,13 +175,13 @@ def load_data(dataset, base_dir, output_folder, json_folder):
                 label[anomaly[0]:anomaly[1] + 1] = True
                 labels.extend(label)
 
-                _class = row["sensor_id"]
-                if _class in class_divisions.keys():
-                    class_divisions[_class][1] += length
-                else:
-                    class_divisions[_class] = [current_index, current_index+length]
-                channel_divisions.append([current_index, current_index+length])
-                current_index += length
+            _class = row["sensor_id"]
+            if _class in class_divisions.keys():
+                class_divisions[_class][1] += length
+            else:
+                class_divisions[_class] = [current_index, current_index+length]
+            channel_divisions.append([current_index, current_index+length])
+            current_index += length
 
         labels = np.asarray(labels)
         
