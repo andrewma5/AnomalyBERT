@@ -200,7 +200,7 @@ def load_data(dataset, base_dir, output_folder, json_folder):
         to_concat = []
         for name in filenames:
             file = pd.read_csv(os.path.join(base_dir, 'Floodwatch_single/' + name + ".csv"))
-            to_concat.append(file)
+            to_concat.append(file.drop(["date"], axis=1))
 
         all_data = np.concatenate(to_concat)
         all_data = MinMaxScaler().fit_transform(all_data)
