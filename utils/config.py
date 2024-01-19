@@ -6,7 +6,7 @@ LOG_DIR = 'logs/'
 DATA_PROPERTY_DIR = 'datasets/processed/'
 
 
-DATASET_LIST = ['SMAP', 'MSL', 'SMD', 'SWaT', 'WADI', "Floodwatch"]
+DATASET_LIST = ['SMAP', 'MSL', 'SMD', 'SWaT', 'WADI', "Floodwatch", "Floodwatch_single"]
 
 TRAIN_DATASET = {}
 TEST_DATASET = {}
