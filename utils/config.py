@@ -25,6 +25,8 @@ DATA_DIVISION = {'SMAP' : {'channel' : DATA_PROPERTY_DIR+'SMAP_test_channel.json
                  'SMD' : {'channel' : DATA_PROPERTY_DIR+'SMD_test_channel.json'},
                  'Floodwatch' : {'channel' : DATA_PROPERTY_DIR+'Floodwatch_test_channel.json',
                            'class' : DATA_PROPERTY_DIR+'Floodwatch_test_class.json'},
+                 'Floodwatch_single' : {'channel' : DATA_PROPERTY_DIR+'Floodwatch_single_test_channel.json',
+                           'class' : DATA_PROPERTY_DIR+'Floodwatch_single_test_class.json'},
                 }
 
 DEFAULT_DIVISION = {'SMAP' : 'channel',
@@ -32,7 +34,8 @@ DEFAULT_DIVISION = {'SMAP' : 'channel',
                     'SMD' : 'channel',
                     'SWaT' : 'total',
                     'WADI' : 'total',
-                    'Floodwatch' : 'channel'
+                    'Floodwatch' : 'channel',
+                    'Floodwatch_single' : 'channel'
                    }
 
 
@@ -40,6 +43,7 @@ NUMERICAL_COLUMNS = {'SMAP' : (0,),
                      'MSL' : (0,),
                      'SMD' : tuple(list(range(7)) + list(range(8, 38))),
                      'Floodwatch' : range(3),
+                     'Floodwatch_single' : range(3),
                     }
 
 CATEGORICAL_COLUMNS = {'SMAP' : range(1, 25),

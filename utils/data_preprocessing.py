@@ -194,6 +194,52 @@ def load_data(dataset, base_dir, output_folder, json_folder):
 
         np.save(os.path.join(output_folder, dataset + "_train.npy"), all_data)
         np.save(os.path.join(output_folder, dataset + "_test.npy"), all_data)
+
+    elif dataset == "Floodwatch_single":
+        filenames = ["single", "single1", "single2", "single3", "single4", "single5", "single6", "single7"]
+        to_concat = []
+        for name in filenames:
+            file = pd.read_csv(os.path.join(base_dir, 'Floodwatch_single/' + name + ".csv"))
+            to_concat.append(file.drop(["createdAtUnix"], axis=1))
+
+        all_data = np.concatenate(to_concat)
+        all_data = MinMaxScaler().fit_transform(all_data)
+
+        anomalies = pd.read_csv(os.path.join(base_dir, "Floodwatch_single/single_anomalies.csv"))
+
+        labels = []
+        class_divisions = {}
+        channel_divisions = []
+        current_index = 0
+
+        for i, row in anomalies.iterrows():
+            anoms = ast.literal_eval(row["anomalies"])
+            length = int(row["length"])
+            label = np.zeros([length], dtype=bool)
+            for anomaly in anoms:
+                label[anomaly[0]:anomaly[1] + 1] = True
+            labels.extend(label)
+
+            _class = row["sensor_id"]
+            if _class in class_divisions.keys():
+                class_divisions[_class][1] += length
+            else:
+                class_divisions[_class] = [current_index, current_index+length]
+            channel_divisions.append([current_index, current_index+length])
+            current_index += length
+
+        labels = np.asarray(labels)
+        
+        np.save(os.path.join(output_folder, dataset + "_test_label.npy"), labels)
+
+        with open(os.path.join(output_folder, dataset + "_test_class.json"), 'w') as file:
+            json.dump(class_divisions, file)
+        with open(os.path.join(output_folder, dataset + "_test_channel.json"), 'w') as file:
+            json.dump(channel_divisions, file)
+
+        np.save(os.path.join(output_folder, dataset + "_train.npy"), all_data)
+        np.save(os.path.join(output_folder, dataset + "_test.npy"), all_data)
+
         
         
 
@@ -210,7 +256,7 @@ if __name__ == '__main__':
                         help="Directory of the json files for the processed data")
     options = parser.parse_args()
     
-    datasets = ['SMD', 'SMAP', 'MSL', 'SWaT', 'WADI', "Floodwatch"]
+    datasets = ['SMD', 'SMAP', 'MSL', 'SWaT', 'WADI', "Floodwatch", "Floodwatch_single"]
     
     if options.dataset in datasets:
         base_dir = options.data_dir
