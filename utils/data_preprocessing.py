@@ -151,7 +151,8 @@ def load_data(dataset, base_dir, output_folder, json_folder):
         np.save(os.path.join(output_folder, dataset + "_test_label.npy"), abnormal_label)
 
     elif dataset == "Floodwatch":
-        filenames = ["combined", "combined1", "combined2", "combined3"]
+        anomalies = pd.read_csv(os.path.join(base_dir, "Floodwatch/anomalies.csv"))
+        filenames = list(anomalies["sensor_name"])
         to_concat = []
         for name in filenames:
             file = pd.read_csv(os.path.join(base_dir, 'Floodwatch/' + name + ".csv"))
@@ -175,7 +176,7 @@ def load_data(dataset, base_dir, output_folder, json_folder):
                 label[anomaly[0]:anomaly[1] + 1] = True
             labels.extend(label)
 
-            _class = row["sensor_id"]
+            _class = row["sensor_name"]
             if _class in class_divisions.keys():
                 class_divisions[_class][1] += length
             else:
