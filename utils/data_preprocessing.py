@@ -178,8 +178,8 @@ def load_data(dataset, base_dir, output_folder, json_folder):
 
         for i, row in anomalies.iterrows():
             anoms = ast.literal_eval(row["anomalies"])
-            length = int(row["length"])
-            label = np.zeros([length], dtype=bool)
+            length = int(row["length"]) - int(row["test_split_index"])
+            label = np.zeros([int(row["length"])], dtype=bool)
             for anomaly in anoms:
                 label[anomaly[0]:anomaly[1] + 1] = True
             labels.extend(label[row["test_split_index"]:])
