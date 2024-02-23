@@ -182,7 +182,7 @@ def load_data(dataset, base_dir, output_folder, json_folder):
             label = np.zeros([length], dtype=bool)
             for anomaly in anoms:
                 label[anomaly[0]:anomaly[1] + 1] = True
-            labels.extend(label)
+            labels.extend(label[row["test_split_index"]:])
 
             _class = row["sensor_name"]
             if _class in class_divisions.keys():
