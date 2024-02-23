@@ -157,13 +157,13 @@ def load_data(dataset, base_dir, output_folder, json_folder):
         to_concat_test = []
         for i, row in anomalies.iterrows():
             data = pd.read_csv(os.path.join(base_dir, 'Floodwatch/' + row["sensor_name"] + ".csv")).drop(["createdAtUnix"], axis=1)
-            to_concat.append(data)
+            to_concat_all.append(data)
 
             split_index = row["test_split_index"]
             to_concat_train.append(data[:split_index])
             to_concat_test.append(data[split_index:])
 
-        all_data = np.concatenate(to_concat)
+        all_data = np.concatenate(to_concat_all)
         train = np.concatenate(to_concat_train)
         test = np.concatenate(to_concat_test)
 
